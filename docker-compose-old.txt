@@ -13,13 +13,13 @@ services:
     - contnet
     restart: always
     environment: 
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      MYSQL_HOST: db:3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   
   db:
-    build: .
+    image: mysql:5.7
     volumes:
     - db:/var/lib/mysql
     restart: always
@@ -28,12 +28,12 @@ services:
     ports:
     - '3306:3306'
     environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_RANDOM_ROOT_PASSWORD: '1' 
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}  
 
-volumes:  
+volumes:
   db: {}
   wp_data: {}
   src: {}   
