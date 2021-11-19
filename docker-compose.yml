@@ -1,49 +1,43 @@
-version: '3.3'
+version: "3.9"
 
 services:
-  wp-site01:
-    depends_on: 
-      - db
+  wp_s01:
     image: wordpress
     container_name: site01
     volumes:
-      - ./wp-docker/var/www/html/wp-content/plugins/meu-plugin
+    - src:/var/www/html/wp-content/plugins/meu-plugin
+    - wp_data:/var/www/html
     ports: 
-      - "8081:80"    
+    - "8000:80"    
     networks: 
-      - contnet
+    - contnet
     restart: always
     environment: 
-      MYSQL_DB_HOST: db:3306
+      MYSQL_HOST: db:3306
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_DB_USER: ${MYSQL_USER}
-      MYSQL_DB_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   
   db:
     image: mysql:5.7
     volumes:
-      - db:/var/lib/mysql
-    networks: 
-      - contnet
-    ports:
-      - "3306:3306"  
-    environment: 
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_DB_USER: ${MYSQL_USER}
-      MYSQL_DB_PASSWORD: ${MYSQL_PASSWORD}  
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
-  adminer:
-    depends_on: 
-      - db
-    image: adminer
+    - db:/var/lib/mysql
     restart: always
+    networks: 
+    - contnet
     ports:
-      - "8080:8080"
-    networks:
-      - contnet
+    - "3306:3306"  
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}  
+
 volumes:
-  db: {}   
+  db: {}
+  wp_data: {}
+  src: {}   
+
 networks:
   contnet:
     driver: bridge
