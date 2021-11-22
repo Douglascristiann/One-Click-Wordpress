@@ -2,15 +2,18 @@ version: "3.9"
 
 services:
   wp_s01:
-    image: wordpress
+    env_file:
+      - connection.env
+    build:
+      dockerfile: ./wp.dockerfile
+      context: .
+    image: douglascristiann/wp_site:1.0
     container_name: site01
-    volumes:
-    - src:/var/www/html/wp-content/plugins/meu-plugin
-    - wp_data:/var/www/html
-    ports: 
-    - '8000:80'    
+    # volumes:
+    #   - src:/var/www/html/wp-content/plugins/meu-plugin
+    #   - ./wp_data:/var/www/html    
     networks: 
-    - contnet
+      - contnet
     restart: always
     environment: 
       WORDPRESS_DB_HOST: db
@@ -19,24 +22,28 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
   
   db:
-    build: .
-    volumes:
-    - db:/var/lib/mysql
+    env_file:
+      - connection.env
+    build:
+      dockerfile: ./dbmysql.dockerfile
+      context: .
+    container_name: wp_mysql
+    image: douglascristiann/dbmysql:5.7
+    # volumes:
+    #   - db:/var/lib/mysql
     restart: always
     networks: 
-    - contnet
-    ports:
-    - '3306:3306'
+      - contnet
     environment: 
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: '1' 
 
-volumes:  
-  db: {}
-  wp_data: {}
-  src: {}   
+# volumes:  
+#   db: {}
+#   wp_data: {}
+#   src: {}   
 
 networks:
   contnet:
