@@ -3,15 +3,15 @@ version: "3.9"
 services:
   wp_s01:
     env_file:
-      - connection.env
+      - connection.env 
     build:
       dockerfile: ./wp.dockerfile
       context: .
     image: douglascristiann/wp_site:1.0
     container_name: site01
-    # volumes:
-    #   - src:/var/www/html/wp-content/plugins/meu-plugin
-    #   - ./wp_data:/var/www/html    
+    volumes:
+      - src:/var/www/html/wp-content/plugins/meu-plugin
+      - wp_data:/var/www/html    
     networks: 
       - contnet
     restart: always
@@ -29,8 +29,8 @@ services:
       context: .
     container_name: wp_mysql
     image: douglascristiann/dbmysql:5.7
-    # volumes:
-    #   - db:/var/lib/mysql
+    volumes:
+       - db:/var/lib/mysql
     restart: always
     networks: 
       - contnet
@@ -40,10 +40,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: '1' 
 
-# volumes:  
-#   db: {}
-#   wp_data: {}
-#   src: {}   
+   
 
 networks:
   contnet:

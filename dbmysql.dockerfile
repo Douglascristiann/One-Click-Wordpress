@@ -1,6 +1,10 @@
 FROM mysql:5.7
-
 LABEL Douglas Cristian 
-WORKDIR /mysql
+
+
+ENV home=/home/debian-wsl
+
+VOLUME ${home}/db
+
+
 EXPOSE 3306:3306
-VOLUME  db:/var/lib/mysql

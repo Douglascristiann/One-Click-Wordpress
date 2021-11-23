@@ -1,8 +1,11 @@
 FROM wordpress:latest
 
+# CMD pwd referência variável 
 
-WORKDIR /php
+ENV home=/home/debian-wsl
+
+#WORKDIR /php
+VOLUME ${home}/src
+VOLUME ${home}/wp_data
+
 EXPOSE 8000:80
-
-VOLUME /src/:/var/www/html/wp-content/plugins/meu-plugin
-VOLUME /wp_data/:/var/www/html
