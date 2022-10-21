@@ -6,19 +6,24 @@ Services
 * phpmyadmin - default setting without auto login 
 * portainer - need create user
  
+Depends
+* Run Docker Engine [Get docker](https://docs.docker.com/get-docker/)
+* Docker Compose v2 [Overviews](https://docs.docker.com/compose/), [Install](https://docs.docker.com/compose/install/)
+** REPO: <https://github.com/docker/compose>
+
 
 ##### view browser - accasse GUI
 
 ~~~Worpress
-http://localhost:8080/
+    [localhost port 8080](http://localhost:8080/)
 ~~~
 
 ~~~MYSQL client
-http://localhost:8081/
+    [localhost 8081](http://localhost:8081/)
 ~~~
 
 ~~~Managing containers
-https://localhost:9443/
+    [localhost 9443](https://localhost:9443/)
 ~~~
 
 ##### Dockerhub images & Versions
