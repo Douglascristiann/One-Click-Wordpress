@@ -1,19 +1,18 @@
 version: "3.9"
 
 services:
-  wp_s01:
+  wp:
     env_file:
       - connection.env 
-    build:
-      dockerfile: ./wp.dockerfile
-      context: .
-    image: douglascristiann/wp_site:1.0
-    container_name: site01
+    image: wordpress:latest
+    container_name: wordpress
     volumes:
-      - src:/var/www/html/wp-content/plugins/meu-plugin
+      - $PWD/plugins/:/var/www/html/wp-content/plugins/my-plugin
       - wp_data:/var/www/html    
     networks: 
       - contnet
+    ports:
+      - '8081:80'
     restart: always
     environment: 
       WORDPRESS_DB_HOST: db
@@ -24,23 +23,53 @@ services:
   db:
     env_file:
       - connection.env
-    build:
-      dockerfile: ./dbmysql.dockerfile
-      context: .
-    container_name: wp_mysql
-    image: douglascristiann/dbmysql:5.7
+    image: mysql:5.7
     volumes:
-       - db:/var/lib/mysql
+       - mysql:/var/lib/mysql
     restart: always
     networks: 
       - contnet
+    ports:
+      - '3306:3306'
     environment: 
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: '1' 
+  
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    networks:
+      - contnet
+    environment:
+      PMA_HOSTS: db
+    ### uncomment for the two row below for AUTOLOGIN ###
+    # PMA_USER:{MYSQL_USER} 
+    # PMA_PASSWORD: {MYSQL_PASSWORD}
+  
+  portainer:
+    image: portainer/portainer-ce:2.9.3
+    restart: always
+    ports:
+      - '9443:9443'
+      - '8000:8000'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/data
 
-   
+
+volumes:
+  mysql:
+  src:
+  plugins:
+  wp_data:
+  portainer:
+
 
 networks:
   contnet:
