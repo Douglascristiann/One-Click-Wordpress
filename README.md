@@ -1,29 +1,29 @@
-### self-managing blog wordpress
+### Self-managing blog wordpress
 This project one click run blog wordpress. Aims, local provisioning of deploying or study architecture sites in wordpress with mininal depends external managing tools. 
 
 Services
-* worpress 
+* worpress
+* mysql
 * phpmyadmin - default setting without auto login 
 * portainer - need create user
  
 Depends
 * Run Docker Engine [Get docker](https://docs.docker.com/get-docker/)
-* Docker Compose v2 [Overviews](https://docs.docker.com/compose/), [Install](https://docs.docker.com/compose/install/)
-** REPO: <https://github.com/docker/compose>
+* Docker Compose v2 [Overviews](https://docs.docker.com/compose/), [Install](https://docs.docker.com/compose/install/) and <https://github.com/docker/compose>
 
 
 ##### view browser - accasse GUI
 
 ~~~Worpress
-    [localhost port 8080](http://localhost:8080/)
+    http://localhost:8080/
 ~~~
 
 ~~~MYSQL client
-    [localhost 8081](http://localhost:8081/)
+    http://localhost:8081/
 ~~~
 
 ~~~Managing containers
-    [localhost 9443](https://localhost:9443/)
+    https://localhost:9443/
 ~~~
 
 ##### Dockerhub images & Versions

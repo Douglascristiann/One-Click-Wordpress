@@ -2,8 +2,6 @@ version: "3.9"
 
 services:
   wp:
-    env_file:
-      - connection.env 
     image: wordpress:latest
     container_name: wordpress
     volumes:
@@ -12,18 +10,16 @@ services:
     networks: 
       - contnet
     ports:
-      - '8081:80'
+      - '8080:80'
     restart: always
     environment: 
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${WP_USER}
+      WORDPRESS_DB_PASSWORD: ${USERDB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WP_DATABASE}
   
   db:
-    env_file:
-      - connection.env
-    image: mysql:5.7
+    image: mysql:latest
     volumes:
        - mysql:/var/lib/mysql
     restart: always
@@ -32,10 +28,11 @@ services:
     ports:
       - '3306:3306'
     environment: 
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_RANDOM_ROOT_PASSWORD: '1' 
+      MYSQL_DATABASE: db_wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: exemple
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    command: '--default-authentication-plugin=mysql_native_password' 
   
   phpmyadmin:
     depends_on:
